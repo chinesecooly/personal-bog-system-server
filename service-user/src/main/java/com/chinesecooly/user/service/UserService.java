@@ -1,7 +1,11 @@
 package com.chinesecooly.user.service;
 
+import com.chinesecooly.common.Result;
 import com.chinesecooly.mysql.domain.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author Administrator
@@ -9,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2022-04-20 20:51:29
 */
 public interface UserService extends IService<User> {
-
+    List<User> getByName(String name);
+    Result login(User user);
+    Result logout();
 }

@@ -21,6 +21,12 @@ public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMappe
     public List<Category> getArticleCategory(Long articleId) {
         return baseMapper.selectArticleCategory(articleId);
     }
+
+    @Override
+    public List<ArticleCategory> selectArticleIdByCategoryId(Long categoryId) {
+        return baseMapper.selectArticleIdByCategoryId(categoryId);
+    }
+
 }
 
 

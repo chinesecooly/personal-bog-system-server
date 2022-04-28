@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/articleTag")
-@CrossOrigin
 public class ArticleTagController {
     @Resource
     private ArticleTagService articleTagService;

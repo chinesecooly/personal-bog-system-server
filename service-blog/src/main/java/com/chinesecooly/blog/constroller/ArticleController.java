@@ -7,6 +7,7 @@ import com.chinesecooly.common.Code;
 import com.chinesecooly.common.Result;
 import com.chinesecooly.mysql.domain.Article;
 import com.chinesecooly.mysql.vo.ArticleBody;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,31 +28,26 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/article")
-@CrossOrigin
 public class ArticleController {
 
     @Resource
     private ArticleService articleService;
 
     @GetMapping("/page")
-    public Result getPage(@RequestParam("pageNumber") Long pageNumber, @RequestParam("pageSize") Long pageSize){
-        Page<Article> articlePage = new Page<>(pageNumber,pageSize);
-        Page<Article> page = articleService.page(articlePage);
-        List<Article> records = page.getRecords();
-        return Result.newInstance().code(Code.SUCCESS).message("查询成功").data(records);
+    public Result getPage(@RequestParam("pageNumber") Long pageNumber, @RequestParam("pageSize") Long pageSize,@RequestParam("categoryId") Long categoryId){
+        List<Article> page = articleService.getPage(pageNumber, pageSize, categoryId);
+        return Result.newInstance().code(Code.SUCCESS).message("查询成功").data(page);
     }
 
     @GetMapping("/pageCount")
-    public Result getPageCount(@RequestParam("pageNumber") Long pageNumber, @RequestParam("pageSize") Long pageSize){
-        Page<Article> articlePage = new Page<>(pageNumber,pageSize);
-        Page<Article> page = articleService.page(articlePage);
-        return Result.newInstance().code(Code.SUCCESS).message("查询成功").data(page.getPages());
+    public Result getPageCount(@RequestParam("pageNumber") Long pageNumber, @RequestParam("pageSize") Long pageSize,@RequestParam("categoryId") Long categoryId){
+        Long pageCount = articleService.getPageCount(pageNumber, pageSize, categoryId);
+        return Result.newInstance().code(Code.SUCCESS).message("查询成功").data(pageCount);
     }
 
     @PostMapping("/saveMd")
     public Result saveMd(@RequestBody ArticleBody articleBody){
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
-//        String fileName = dateTimeFormatter.format(LocalDateTime.now())+".md";
         String fileName = dateTimeFormatter.format(LocalDateTime.now());
         Path path = Paths.get("service-blog/src/main/resources/articles/",fileName);
         try {
@@ -61,6 +57,10 @@ public class ArticleController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+//        String fileName = dateTimeFormatter.format(LocalDateTime.now())+".md";
+//        String fileName = dateTimeFormatter.format(LocalDateTime.now());
+//        Path path = Paths.get("service-blog/src/main/resources/articles/",fileName);
 //        try {
 //            Files.write(path,articleBody.getArticleBody().getBytes(), StandardOpenOption.CREATE);
 //            return Result.newInstance().code(Code.SUCCESS).message("文章保存成功").data(fileName);

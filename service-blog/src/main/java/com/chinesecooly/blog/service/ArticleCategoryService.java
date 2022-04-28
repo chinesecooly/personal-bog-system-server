@@ -3,6 +3,7 @@ package com.chinesecooly.blog.service;
 import com.chinesecooly.mysql.domain.ArticleCategory;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chinesecooly.mysql.domain.Category;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ import java.util.List;
 */
 public interface ArticleCategoryService extends IService<ArticleCategory> {
     List<Category> getArticleCategory(Long articleId);
+    List<ArticleCategory> selectArticleIdByCategoryId(Long categoryId);
 }

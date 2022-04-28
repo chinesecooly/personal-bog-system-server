@@ -43,6 +43,10 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.chinesecooly</groupId>
+            <artifactId>api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

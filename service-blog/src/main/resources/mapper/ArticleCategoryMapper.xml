@@ -17,10 +17,16 @@
         create_time,modified_time
     </sql>
     <select id="selectArticleCategory" resultType="com.chinesecooly.mysql.domain.Category">
-        select category.id, category.body
+        select category.id,category.body
         from category
                  inner join
                  (select category_id from article_category where article_id = #{articleId}) t
                  on t. category_id = category.id;
+    </select>
+
+    <select id="selectArticleIdByCategoryId" resultMap="BaseResultMap">
+        select article_id
+        from article_category
+        where category_id = #{categoryId,jdbcType=NUMERIC}
     </select>
 </mapper>

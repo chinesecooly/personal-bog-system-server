@@ -44,10 +44,6 @@ public class User implements Serializable {
      */
     private String avatar;
 
-    /**
-     * 用户权限：1管理员，0游客
-     */
-    private Integer role;
 
     /**
      * 创建时间

@@ -2,6 +2,7 @@ package com.chinesecooly.blog.service;
 
 import com.chinesecooly.mysql.domain.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface ArticleService extends IService<Article> {
     void subLikeCount(Long articleId);
     void subLFavoriteCount(Long articleId);
     void subCommentCount(Long articleId);
+    Long getPageCount(Long pageNumber,  Long pageSize,Long categoryId);
+    List<Article>getPage(Long pageNumber,  Long pageSize,Long categoryId);
 }

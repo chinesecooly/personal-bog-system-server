@@ -20,4 +20,11 @@
         pwd,avatar,role,
         create_time,modified_time
     </sql>
+    <select id="selectByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where
+        name = #{name,jdbcType=VARCHAR}
+    </select>
 </mapper>

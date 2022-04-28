@@ -1,4 +1,5 @@
 package com.chinesecooly.blog.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.chinesecooly.mysql.domain.ArticleCategory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -14,7 +15,10 @@ import java.util.List;
 * @Entity com.chinesecooly.mysql.domain.ArticleCategory
 */
 public interface ArticleCategoryMapper extends BaseMapper<ArticleCategory> {
+
     List<Category> selectArticleCategory(Long articleId);
+
+    List<ArticleCategory> selectArticleIdByCategoryId(@Param("categoryId") Long categoryId);
 }
 
 
