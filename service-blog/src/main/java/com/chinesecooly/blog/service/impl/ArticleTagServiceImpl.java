@@ -5,6 +5,7 @@ import com.chinesecooly.mysql.domain.ArticleTag;
 import com.chinesecooly.blog.service.ArticleTagService;
 import com.chinesecooly.blog.mapper.ArticleTagMapper;
 import com.chinesecooly.mysql.domain.Tag;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,12 @@ public class ArticleTagServiceImpl extends ServiceImpl<ArticleTagMapper, Article
     @Override
     public List<Tag> getArticleTag(Long articleId) {
         return baseMapper.selectArticleTag(articleId);
+
+    }
+
+    @Override
+    public int removeByArticleId(Long articleId) {
+        return baseMapper.deleteByArticleId(articleId);
     }
 }
 

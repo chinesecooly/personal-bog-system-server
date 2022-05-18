@@ -16,4 +16,8 @@ public interface UserService extends IService<User> {
     List<User> getByName(String name);
     Result login(User user);
     Result logout();
+    Result register(User user);
+    Result validUsername(String username);
+    Result generateAuthCode(User user);
+    Result verifyAuthCode(String username,String authCode);
 }

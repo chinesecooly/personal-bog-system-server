@@ -41,6 +41,8 @@
         <data-mq-version>1.0-SNAPSHOT</data-mq-version>
         <druid-version>1.1.17</druid-version>
         <api-version>1.0-SNAPSHOT</api-version>
+        <commons-email-version>1.5</commons-email-version>
+        <commons-lang3-version>3.12.0</commons-lang3-version>
     </properties>
 
     <dependencyManagement>
@@ -115,6 +117,16 @@
                 <groupId>com.chinesecooly</groupId>
                 <artifactId>api</artifactId>
                 <version>${api-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-email</artifactId>
+                <version>${commons-email-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

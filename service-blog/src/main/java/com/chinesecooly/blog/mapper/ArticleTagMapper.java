@@ -1,4 +1,5 @@
 package com.chinesecooly.blog.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.chinesecooly.mysql.domain.ArticleTag;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -14,6 +15,7 @@ import java.util.List;
 */
 public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
     List<Tag> selectArticleTag(Long articleId);
+    int deleteByArticleId(@Param("articleId") Long articleId);
 }
 
 

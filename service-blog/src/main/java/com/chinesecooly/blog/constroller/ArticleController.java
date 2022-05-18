@@ -1,8 +1,12 @@
 package com.chinesecooly.blog.constroller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chinesecooly.blog.service.ArticleCategoryService;
 import com.chinesecooly.blog.service.ArticleService;
+import com.chinesecooly.blog.service.ArticleTagService;
 import com.chinesecooly.common.Code;
 import com.chinesecooly.common.Result;
 import com.chinesecooly.mysql.domain.Article;
@@ -14,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -32,6 +37,10 @@ public class ArticleController {
 
     @Resource
     private ArticleService articleService;
+    @Resource
+    private ArticleCategoryService articleCategoryService;
+    @Resource
+    private ArticleTagService articleTagService;
 
     @GetMapping("/page")
     public Result getPage(@RequestParam("pageNumber") Long pageNumber, @RequestParam("pageSize") Long pageSize,@RequestParam("categoryId") Long categoryId){
@@ -70,6 +79,19 @@ public class ArticleController {
         return null;
     }
 
+    @PostMapping("/saveMdByURL")
+    public Result saveMdById(@PathParam ("url")String url,@RequestBody ArticleBody articleBody){
+        Path path = Paths.get("service-blog/src/main/resources/articles/",url);
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(Files.newOutputStream(path,StandardOpenOption.WRITE));
+            objectOutputStream.writeObject(articleBody);
+            return Result.newInstance().code(Code.SUCCESS).message("文章保存成功");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @GetMapping("/saveArticle")
     public Result saveArticle(Article article){
         boolean save = articleService.save(article);
@@ -78,6 +100,30 @@ public class ArticleController {
         }else {
             return Result.newInstance().code(Code.FAILED).message("发布失败");
         }
+    }
+
+    @GetMapping("/publishDraft")
+    public Result publishDraft(@PathParam("id")Long id){
+        UpdateWrapper<Article> articleUpdateWrapper = new UpdateWrapper<>();
+        articleUpdateWrapper.eq("id",id).set("is_draft",0);
+        articleService.update(articleUpdateWrapper);
+        return Result.newInstance().code(Code.SUCCESS).message("发布成功");
+    }
+
+    @GetMapping("/saveDraft")
+    public Result saveDraft(@PathParam("id")Long id){
+        UpdateWrapper<Article> articleUpdateWrapper = new UpdateWrapper<>();
+        articleUpdateWrapper.eq("id",id).set("is_draft",1);
+        articleService.update(articleUpdateWrapper);
+        return Result.newInstance().code(Code.SUCCESS).message("保存成功");
+    }
+
+    @GetMapping("/saveDescription")
+    public Result saveDescription(@PathParam("id")Long id,@PathParam("description")String description){
+        UpdateWrapper<Article> articleUpdateWrapper = new UpdateWrapper<>();
+        articleUpdateWrapper.eq("id",id).set("description",description);
+        articleService.update(articleUpdateWrapper);
+        return Result.newInstance().code(Code.SUCCESS).message("保存成功");
     }
 
     @GetMapping("/articleInfo")
@@ -106,6 +152,63 @@ public class ArticleController {
 //            e.printStackTrace();
 //        }
     }
+
+    @GetMapping("/sysAll")
+    Result sysAll(){
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.ne("is_deleted",1);
+        List<Article> list = articleService.list(articleQueryWrapper);
+        return Result.newInstance().code(Code.SUCCESS).data(list);
+    }
+
+    @GetMapping("/sysDraft")
+    Result sysDraft(){
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.eq("is_draft",1).ne("is_deleted",1);
+        List<Article> list = articleService.list(articleQueryWrapper);
+        return Result.newInstance().code(Code.SUCCESS).data(list);
+    }
+
+    @GetMapping("/sysArticle")
+    Result sysArticle(){
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.ne("is_draft",1).ne("is_deleted",1);
+        List<Article> list = articleService.list(articleQueryWrapper);
+        return Result.newInstance().code(Code.SUCCESS).data(list);
+    }
+
+    @GetMapping("/sysRecycle")
+    Result sysRecycle(){
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
+        articleQueryWrapper.eq("is_deleted",1);
+        List<Article> list = articleService.list(articleQueryWrapper);
+        return Result.newInstance().code(Code.SUCCESS).data(list);
+    }
+
+    @GetMapping("/sysDeleteById")
+    Result sysDelete(@RequestParam("id")Long id){
+        UpdateWrapper<Article> articleUpdateWrapper = new UpdateWrapper<>();
+        articleUpdateWrapper.eq("id",id).set("is_deleted",1);
+        articleService.update(articleUpdateWrapper);
+        return Result.newInstance().code(Code.SUCCESS).message("删除成功");
+    }
+
+    @GetMapping("/sysThoroughDeleteById")
+    Result sysThoroughDeleteById(@RequestParam("id")Long id){
+        articleService.removeById(id);
+        articleCategoryService.removeByArticleId(id);
+        articleTagService.removeByArticleId(id);
+        return Result.newInstance().code(Code.SUCCESS).message("删除成功");
+    }
+
+    @GetMapping("/recoverArticleById")
+    Result recoverArticleById(@RequestParam("id")Long id){
+        UpdateWrapper<Article> articleUpdateWrapper = new UpdateWrapper<>();
+        articleUpdateWrapper.eq("id",id).set("is_deleted",0);
+        articleService.update(articleUpdateWrapper);
+        return Result.newInstance().code(Code.SUCCESS).message("恢复成功");
+    }
+
 
     @GetMapping("/addReadCount")
     public void addReadCount(@RequestParam("articleId")Long articleId){

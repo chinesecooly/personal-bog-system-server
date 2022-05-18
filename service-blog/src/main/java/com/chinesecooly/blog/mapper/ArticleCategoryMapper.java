@@ -19,6 +19,8 @@ public interface ArticleCategoryMapper extends BaseMapper<ArticleCategory> {
     List<Category> selectArticleCategory(Long articleId);
 
     List<ArticleCategory> selectArticleIdByCategoryId(@Param("categoryId") Long categoryId);
+
+    int deleteByArticleId(@Param("articleId") Long articleId);
 }
 
 

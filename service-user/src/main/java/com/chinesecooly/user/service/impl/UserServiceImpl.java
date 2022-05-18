@@ -1,38 +1,46 @@
 package com.chinesecooly.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.chinesecooly.common.Code;
-import com.chinesecooly.common.JwtUtil;
-import com.chinesecooly.common.Result;
+import com.chinesecooly.common.*;
 import com.chinesecooly.mysql.domain.User;
 import com.chinesecooly.redis.util.RedisUtil;
 import com.chinesecooly.user.dto.LoginUser;
 import com.chinesecooly.user.service.UserService;
 import com.chinesecooly.user.mapper.UserMapper;
+import org.apache.commons.mail.EmailException;
+import org.junit.jupiter.api.RepeatedTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
-* @author Administrator
-* @description 针对表【user】的数据库操作Service实现
-* @createDate 2022-04-20 20:51:29
-*/
+ * @author Administrator
+ * @description 针对表【user】的数据库操作Service实现
+ * @createDate 2022-04-20 20:51:29
+ */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements UserService{
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Resource
     private AuthenticationManager authenticationManager;
 
     @Resource
+    private UserMapper userMapper;
+
+    @Resource
     private RedisUtil redisUtil;
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getByName(String name) {
@@ -41,21 +49,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements U
 
     @Override
     public Result login(User user) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getName(),user.getPwd());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getName(), user.getPwd());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        if(Objects.isNull(authenticate)){
+        if (Objects.isNull(authenticate)) {
             throw new RuntimeException("用户名或密码错误");
         }
-        //使用userid生成token
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
-        //authenticate存入redis
-        redisUtil.setObject("login:"+userId,loginUser);
-        //把token响应给前端
-        HashMap<String,String> map = new HashMap<>();
-        map.put("token",jwt);
-        return Result.newInstance().code(Code.SUCCESS).message("登陆成功").data(map);
+        redisUtil.setObject("login:" + userId, loginUser,1,TimeUnit.DAYS);
+        return Result.newInstance().code(Code.SUCCESS).message("登陆成功").data(jwt);
     }
 
     @Override
@@ -63,8 +66,50 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>  implements U
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         Long userid = loginUser.getUser().getId();
-        redisUtil.deleteObject("login:"+userid);
+        redisUtil.deleteObject("login:" + userid);
         return Result.newInstance().code(Code.SUCCESS).message("退出成功");
+    }
+
+    @Override
+    public Result validUsername(String username) {
+        List<User> users = userMapper.selectByName(username);
+        if (users.size() != 0) {
+            return Result.newInstance().code(Code.FAILED).message("用户名已存在！");
+        } else {
+            return Result.newInstance().code(Code.SUCCESS);
+        }
+    }
+
+    @Override
+    public Result generateAuthCode(User user) {
+        String authCode = AuthCode.generateAuthCode(5);
+        redisUtil.setObject(user.getName(), authCode, 60, TimeUnit.SECONDS);
+        try {
+            EmailUtil.sendEmail(user.getEmail(), authCode);
+            return Result.newInstance().code(Code.SUCCESS);
+        } catch (EmailException e) {
+            e.printStackTrace();
+        }
+        return Result.newInstance().code(Code.FAILED).message("获取验证码失败");
+    }
+
+    @Override
+    public Result register(User user) {
+        user.setPwd(passwordEncoder.encode(user.getPwd()));
+        userMapper.insert(user);
+        return Result.newInstance().code(Code.SUCCESS).message("注册成功");
+    }
+
+    @Override
+    public Result verifyAuthCode(String username, String authCode) {
+        String redisAuthCode = redisUtil.getObject(username);
+        if (Objects.isNull(redisAuthCode)) {
+            return Result.newInstance().code(Code.FAILED).message("验证码已过期，请重新获取");
+        } else if (!redisAuthCode.equals(authCode)) {
+            return Result.newInstance().code(Code.FAILED).message("验证码错误请重新输入");
+        } else {
+            return Result.newInstance().code(Code.SUCCESS);
+        }
     }
 }
 

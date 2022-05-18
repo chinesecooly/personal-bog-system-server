@@ -1,0 +1,21 @@
+spring:
+  jackson:
+    date-format: java.text.SimpleDateFormat
+wss:
+  host: localhost
+  port: 8003
+  protocol:
+    magic-number: chinesecooly
+    version: 1.0
+    serialize-algorithm: json
+  server-options:
+    so-backlog: 1024
+  client-options:
+    connect-timeout-millis: 5000
+    tcp-node-lay: true
+
+
+
+
+
+

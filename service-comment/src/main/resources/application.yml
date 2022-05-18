@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: service-comment
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: ny02164215
+    url: jdbc:mysql://localhost:3306/personal_blog_system_comment?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 123.57.71.52:8848
+  jackson:
+    date-format: java.text.SimpleDateFormat
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 8004

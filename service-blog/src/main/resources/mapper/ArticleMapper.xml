@@ -5,20 +5,22 @@
 <mapper namespace="com.chinesecooly.blog.mapper.ArticleMapper">
 
     <resultMap id="BaseResultMap" type="com.chinesecooly.mysql.domain.Article">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="title" column="title" jdbcType="VARCHAR"/>
-            <result property="url" column="url" jdbcType="VARCHAR"/>
-            <result property="description" column="description" jdbcType="VARCHAR"/>
-            <result property="likeCount" column="like_count" jdbcType="OTHER"/>
-            <result property="commentCount" column="comment_count" jdbcType="OTHER"/>
-            <result property="favoriteCount" column="favorite_count" jdbcType="OTHER"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="OTHER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="modifiedTime" column="modified_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="likeCount" column="like_count" jdbcType="OTHER"/>
+        <result property="commentCount" column="comment_count" jdbcType="OTHER"/>
+        <result property="favoriteCount" column="favorite_count" jdbcType="OTHER"/>
+        <result property="readCount" column="read_count" jdbcType="OTHER"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="OTHER"/>
+        <result property="isDraft" column="is_draft" jdbcType="OTHER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="modifiedTime" column="modified_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,title,url,
+        id,title,url,readCount,
         description,like_count,comment_count,
         favorite_count,is_deleted,create_time,
         modified_time

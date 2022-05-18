@@ -4,6 +4,9 @@ import com.chinesecooly.common.JwtUtil;
 import com.chinesecooly.redis.util.RedisUtil;
 import com.chinesecooly.user.dto.LoginUser;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -26,32 +29,24 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //获取token
         String token = request.getHeader("token");
         if (!StringUtils.hasText(token)) {
-            //放行
             filterChain.doFilter(request, response);
             return;
         }
-        //解析token
-        String userid;
+        String userid= null;
         try {
-            Claims claims = JwtUtil.parseJWT(token);
-            userid = claims.getSubject();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("token非法");
+            userid = JwtUtil.parseJWT(token).getSubject();
+        } catch (JwtException e) {
+                throw new AccountExpiredException("登陆超时请重新登录");
         }
-        //从redis中获取用户信息
         String redisKey = "login:" + userid;
         LoginUser loginUser = redisUtil.getObject(redisKey);
-        if(Objects.isNull(loginUser)){
-            throw new RuntimeException("用户未登录");
+        if (Objects.isNull(loginUser)) {
+                throw new AccountExpiredException("登陆超时请冲洗登录");
         }
-        //存入SecurityContextHolder
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser,null,loginUser.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser, null, loginUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        //放行
         filterChain.doFilter(request, response);
     }
 }

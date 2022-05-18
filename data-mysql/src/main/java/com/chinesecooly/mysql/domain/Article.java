@@ -65,6 +65,11 @@ public class Article implements Serializable {
     private Integer isDeleted;
 
     /**
+     * 是否是草稿
+     */
+    private Integer isDraft;
+
+    /**
      * 创建时间
      */
     private Date createTime;

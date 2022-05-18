@@ -15,4 +15,5 @@ import java.util.List;
 public interface ArticleCategoryService extends IService<ArticleCategory> {
     List<Category> getArticleCategory(Long articleId);
     List<ArticleCategory> selectArticleIdByCategoryId(Long categoryId);
+    int removeByArticleId(Long articleId);
 }

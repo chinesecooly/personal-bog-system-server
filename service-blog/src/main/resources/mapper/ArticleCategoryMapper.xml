@@ -29,4 +29,9 @@
         from article_category
         where category_id = #{categoryId,jdbcType=NUMERIC}
     </select>
+    <delete id="deleteByArticleId">
+        delete
+        from article_category
+        where article_id = #{articleId,jdbcType=NUMERIC}
+    </delete>
 </mapper>

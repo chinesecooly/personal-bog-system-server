@@ -18,6 +18,7 @@ public class ArticleTagController {
 
     @PostMapping("/saveArticleTag")
     public Result saveArticleTag(@RequestParam("articleId")Long articleId,@RequestBody List<ArticleTag> articleTags){
+        articleTagService.removeByArticleId(articleId);
         for (ArticleTag articleTag : articleTags) {
             articleTag.setArticleId(articleId);
             articleTagService.save(articleTag);

@@ -1,21 +1,37 @@
 server:
-  port: 9000
+  port: 8000
 spring:
   cloud:
     gateway:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:8080"
+            allowedOrigins: http://localhost:8080
             allowedMethods:
               - GET
               - POST
+              - OPTIONS
+              - PUT
+              - DELETE
+            allowedHeaders: '*'
       routes:
         - id: service-blog
-          uri: http://localhost:9001
+          uri: http://localhost:8001
           predicates:
             - Path=/article/**,/articleCategory/**,/articleTag/**,/category/**,/image/**,/tag/**
         - id: service-user
-          uri: http://localhost:9002
+          uri: http://localhost:8002
           predicates:
-            - Path=/user/**
+            - Path=/user/**,/sysArticle/**
+        - id: service-online-chat
+          uri: ws://localhost:8003
+          predicates:
+            - Path=/ws/**
+        - id: service-comment
+          uri: http://localhost:8004
+          predicates:
+            - Path=/comment/**
+        - id: service-message
+          uri: http://localhost:8005
+          predicates:
+            - Path=/message/**

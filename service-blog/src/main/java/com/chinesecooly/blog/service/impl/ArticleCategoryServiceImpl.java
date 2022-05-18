@@ -27,6 +27,10 @@ public class ArticleCategoryServiceImpl extends ServiceImpl<ArticleCategoryMappe
         return baseMapper.selectArticleIdByCategoryId(categoryId);
     }
 
+    public int removeByArticleId(Long articleId){
+       return baseMapper.deleteByArticleId(articleId);
+    }
+
 }
 
 

@@ -24,4 +24,9 @@
                  (select tag_id from article_tag where article_id = #{articleId}) t
                  on t.tag_id = tag.id;
     </select>
+    <delete id="deleteByArticleId">
+        delete
+        from article_tag
+        where article_id = #{articleId,jdbcType=NUMERIC}
+    </delete>
 </mapper>

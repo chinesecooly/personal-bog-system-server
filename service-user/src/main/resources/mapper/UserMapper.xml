@@ -10,14 +10,13 @@
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="pwd" column="pwd" jdbcType="VARCHAR"/>
             <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
-            <result property="role" column="role" jdbcType="TINYINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="modifiedTime" column="modified_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,email,
-        pwd,avatar,role,
+        pwd,avatar,
         create_time,modified_time
     </sql>
     <select id="selectByName" resultMap="BaseResultMap">

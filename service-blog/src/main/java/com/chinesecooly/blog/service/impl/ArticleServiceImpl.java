@@ -87,11 +87,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public Long getPageCount(Long pageNumber, Long pageSize, Long categoryId) {
         Page<Article> articlePage = new Page<>(pageNumber, pageSize);
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
         if (categoryId == -1) {
-            baseMapper.selectPage(articlePage, null);
+            articleQueryWrapper.ne("is_draft",1);
+            baseMapper.selectPage(articlePage, articleQueryWrapper);
         } else {
             List<ArticleCategory> articleCategories = articleCategoryMapper.selectArticleIdByCategoryId(categoryId);
-            QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
             if (articleCategories.size()==0){
                 return 0L;
             }
@@ -108,11 +109,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<Article> getPage(Long pageNumber, Long pageSize, Long categoryId) {
         Page<Article> articlePage = new Page<>(pageNumber, pageSize);
+        QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
         if (categoryId == -1) {
-            baseMapper.selectPage(articlePage, null);
+            articleQueryWrapper.ne("is_draft",1);
+            baseMapper.selectPage(articlePage, articleQueryWrapper);
         } else {
             List<ArticleCategory> articleCategories = articleCategoryMapper.selectArticleIdByCategoryId(categoryId);
-            QueryWrapper<Article> articleQueryWrapper = new QueryWrapper<>();
             if (articleCategories.size()==0){
                 return new ArrayList<>();
             }

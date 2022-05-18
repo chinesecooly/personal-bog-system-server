@@ -39,13 +39,13 @@ public class BlogApplicationTest {
 
     @Test
     public void addArticle(){
-        for (int i = 0; i < 10; i++) {
-            Article article = new Article();
-            article.setUrl("url"+"-"+i);
-            article.setTitle("title"+"-"+i);
-            article.setDescription("description"+"-"+i);
-            articleService.save(article);
-        }
+//        for (int i = 0; i < 10; i++) {
+//            Article article = new Article();
+//            article.setUrl("url"+"-"+i);
+//            article.setTitle("title"+"-"+i);
+//            article.setDescription("description"+"-"+i);
+//            articleService.save(article);
+//        }
     }
 
     @Test

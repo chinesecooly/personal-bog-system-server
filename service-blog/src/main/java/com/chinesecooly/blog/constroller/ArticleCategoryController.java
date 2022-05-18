@@ -19,6 +19,7 @@ public class ArticleCategoryController {
 
     @PostMapping("/saveArticleCategory")
     public Result saveArticleCategory(@RequestParam("articleId")Long articleId, @RequestBody List<ArticleCategory> articleCategory){
+        articleCategoryService.removeByArticleId(articleId);
         for (ArticleCategory category : articleCategory) {
             category.setArticleId(articleId);
             articleCategoryService.save(category);
