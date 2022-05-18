@@ -1,4 +1,5 @@
 package com.chinesecooly.user.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.chinesecooly.mysql.domain.UserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface UserRoleMapper extends BaseMapper<UserRole> {
 
+    int deleteByUserId(@Param("userId") Long userId);
 }
 
 

@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -19,6 +22,7 @@ public class Role implements Serializable {
      * 角色ID
      */
     @TableId
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     /**
@@ -35,6 +39,9 @@ public class Role implements Serializable {
      * 修改时间
      */
     private Date modifiedTime;
+
+    @TableField(exist = false)
+    private List<Authority> authorities;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

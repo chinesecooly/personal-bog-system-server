@@ -29,4 +29,14 @@ public class MessageController {
         return Result.newInstance().code(Code.SUCCESS).data(list);
     }
 
+    @PostMapping("/deleteMessage")
+    public Result removeMessage(@RequestBody List<Message> messages){
+        boolean b = messageService.removeByIds(messages);
+        if (b){
+            return Result.newInstance().code(Code.SUCCESS).message("删除成功");
+        }else {
+            return Result.newInstance().code(Code.FAILED).message("删除失败");
+        }
+    }
+
 }

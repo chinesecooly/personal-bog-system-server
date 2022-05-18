@@ -28,6 +28,11 @@ public class ArticleTagServiceImpl extends ServiceImpl<ArticleTagMapper, Article
     public int removeByArticleId(Long articleId) {
         return baseMapper.deleteByArticleId(articleId);
     }
+
+    @Override
+    public int  removeByTagId(Long tagId) {
+       return  baseMapper.deleteByTagId(tagId);
+    }
 }
 
 

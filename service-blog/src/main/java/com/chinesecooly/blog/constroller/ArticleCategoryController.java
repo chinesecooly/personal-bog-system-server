@@ -1,5 +1,6 @@
 package com.chinesecooly.blog.constroller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.chinesecooly.blog.service.ArticleCategoryService;
 import com.chinesecooly.common.Code;
 import com.chinesecooly.common.Result;
@@ -31,5 +32,13 @@ public class ArticleCategoryController {
     public Result getArticleCategory(@RequestParam("articleId")Long articleId){
         List<Category> articleCategory = articleCategoryService.getArticleCategory(articleId);
         return Result.newInstance().code(Code.SUCCESS).message("文章标签").data(articleCategory);
+    }
+
+    @GetMapping("/getArticleCountByArticleId")
+    public Result getArticleCountByArticleId(@RequestParam("categoryId")Long categoryId){
+        QueryWrapper<ArticleCategory> articleCategoryQueryWrapper = new QueryWrapper<>();
+        articleCategoryQueryWrapper.eq("category_id",categoryId);
+        long count = articleCategoryService.count(articleCategoryQueryWrapper);
+        return Result.newInstance().data(count);
     }
 }

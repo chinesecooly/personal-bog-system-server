@@ -75,4 +75,14 @@ public class CommentController {
         Collections.reverse(list);
         return Result.newInstance().code(Code.SUCCESS).data(list);
     }
+
+    @GetMapping("/removeCommentByCommentId")
+    public Result removeCommentByCommentId(@RequestParam("commentId")Long commentId){
+        QueryWrapper<Comment> commentQueryWrapper = new QueryWrapper<>();
+        commentQueryWrapper.eq("father_id",commentId);
+        List<Comment> list = commentService.list(commentQueryWrapper);
+        commentService.removeBatchByIds(list);
+        commentService.removeById(commentId);
+        return Result.newInstance().code(Code.SUCCESS).message("删除成功");
+    }
 }

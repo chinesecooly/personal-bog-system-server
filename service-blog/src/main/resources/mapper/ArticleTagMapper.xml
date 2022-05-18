@@ -29,4 +29,9 @@
         from article_tag
         where article_id = #{articleId,jdbcType=NUMERIC}
     </delete>
+    <delete id="deleteByTagId">
+        delete
+        from article_tag
+        where tag_id = #{tagId,jdbcType=NUMERIC}
+    </delete>
 </mapper>

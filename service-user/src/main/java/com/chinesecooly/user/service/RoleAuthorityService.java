@@ -9,5 +9,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2022-04-28 21:44:10
 */
 public interface RoleAuthorityService extends IService<RoleAuthority> {
-
+    void removeByAuthorityId(Long id);
+    void removeByRoleId(Long id);
 }

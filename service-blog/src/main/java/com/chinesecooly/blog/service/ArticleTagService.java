@@ -14,4 +14,5 @@ import java.util.List;
 public interface ArticleTagService extends IService<ArticleTag> {
     List<Tag> getArticleTag(Long articleId);
     int removeByArticleId(Long articleId);
+    int  removeByTagId(Long TagId);
 }

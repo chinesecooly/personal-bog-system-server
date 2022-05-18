@@ -5,16 +5,17 @@
 <mapper namespace="com.chinesecooly.user.mapper.AuthorityMapper">
 
     <resultMap id="BaseResultMap" type="com.chinesecooly.mysql.domain.Authority">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="path" column="path" jdbcType="VARCHAR"/>
-            <result property="key" column="key" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="modifiedTime" column="modified_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="path" column="path" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="authKey" column="auth_key" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="modifiedTime" column="modified_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,name,path,
-        key,create_time,modified_time
+        id,name,path,description,
+        auth_key,create_time,modified_time
     </sql>
 </mapper>

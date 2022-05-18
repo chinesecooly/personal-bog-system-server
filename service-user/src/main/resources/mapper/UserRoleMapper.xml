@@ -16,4 +16,9 @@
         id,user_id,role_id,
         create_time,modified_time
     </sql>
+    <delete id="deleteByUserId">
+        delete
+        from user_role
+        where user_id = #{userId,jdbcType=NUMERIC}
+    </delete>
 </mapper>

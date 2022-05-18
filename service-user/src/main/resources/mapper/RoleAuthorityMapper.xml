@@ -16,4 +16,14 @@
         id,role_id,authority_id,
         create_time,modified_time
     </sql>
+    <delete id="deleteByAuthorityId">
+        delete
+        from role_authority
+        where authority_id = #{authorityId,jdbcType=NUMERIC}
+    </delete>
+    <delete id="deleteByRoleId">
+        delete
+        from role_authority
+        where role_id = #{roleId,jdbcType=NUMERIC}
+    </delete>
 </mapper>

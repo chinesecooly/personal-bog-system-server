@@ -12,9 +12,16 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-04-28 21:44:10
 */
 @Service
-public class RoleAuthorityServiceImpl extends ServiceImpl<RoleAuthorityMapper, RoleAuthority>
-    implements RoleAuthorityService{
+public class RoleAuthorityServiceImpl extends ServiceImpl<RoleAuthorityMapper, RoleAuthority> implements RoleAuthorityService{
+    @Override
+    public void removeByAuthorityId(Long id) {
+        baseMapper.deleteByAuthorityId(id);
+    }
 
+    @Override
+    public void removeByRoleId(Long id) {
+        baseMapper.deleteByRoleId(id);
+    }
 }
 
 

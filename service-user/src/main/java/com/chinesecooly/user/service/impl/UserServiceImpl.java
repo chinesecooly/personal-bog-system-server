@@ -1,10 +1,15 @@
 package com.chinesecooly.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chinesecooly.common.*;
+import com.chinesecooly.mysql.domain.RoleAuthority;
 import com.chinesecooly.mysql.domain.User;
+import com.chinesecooly.mysql.domain.UserRole;
 import com.chinesecooly.redis.util.RedisUtil;
 import com.chinesecooly.user.dto.LoginUser;
+import com.chinesecooly.user.mapper.RoleAuthorityMapper;
+import com.chinesecooly.user.mapper.UserRoleMapper;
 import com.chinesecooly.user.service.UserService;
 import com.chinesecooly.user.mapper.UserMapper;
 import org.apache.commons.mail.EmailException;
@@ -35,6 +40,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private UserRoleMapper userRoleMapper;
+    @Resource
+    private RoleAuthorityMapper roleAuthorityMapper;
 
     @Resource
     private RedisUtil redisUtil;
@@ -51,9 +60,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Result login(User user) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getName(), user.getPwd());
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        if (Objects.isNull(authenticate)) {
-            throw new RuntimeException("用户名或密码错误");
-        }
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
@@ -97,7 +103,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Result register(User user) {
         user.setPwd(passwordEncoder.encode(user.getPwd()));
         userMapper.insert(user);
-        return Result.newInstance().code(Code.SUCCESS).message("注册成功");
+        UserRole userRole = new UserRole();
+        userRole.setUserId(user.getId());
+        userRole.setRoleId(1527923289131892738L);
+        userRoleMapper.insert(userRole);
+        return Result.newInstance().code(Code.SUCCESS).message("注册成功").data(user.getId());
     }
 
     @Override

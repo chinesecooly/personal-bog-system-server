@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-04-28 21:44:28
 */
 @Service
-public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole>
-    implements UserRoleService{
-
+public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole>  implements UserRoleService{
+    @Override
+    public void removeByUserId(Long id) {
+        baseMapper.deleteByUserId(id);
+    }
 }
 
 

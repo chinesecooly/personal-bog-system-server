@@ -2,6 +2,7 @@ package com.chinesecooly.user.mapper;
 
 import com.chinesecooly.mysql.domain.RoleAuthority;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author Administrator
@@ -11,6 +12,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface RoleAuthorityMapper extends BaseMapper<RoleAuthority> {
 
+    int deleteByAuthorityId(@Param("authorityId") Long authorityId);
+
+    int deleteByRoleId(@Param("roleId") Long roleId);
 }
 
 

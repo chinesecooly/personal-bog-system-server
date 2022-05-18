@@ -13,7 +13,7 @@ spring:
   jackson:
     date-format: java.text.SimpleDateFormat
   redis:
-    host: 123.57.71.52
+    host: localhost
     port: 6379
     username: default
     password: 123456

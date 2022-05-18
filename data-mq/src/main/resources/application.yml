@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    stream:
+      rocketmq:
+        binder:
+          name-server: 127.0.0.1:9876
+      bindings:
+        output:
+          destination: test-topic
+          content-type: application/json
+        input:
+          destination: test-topic
+          content-type: application/json
+          group: test-group
+  application:
+    name: data-mq
+server:
+  port: 8006

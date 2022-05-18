@@ -2,7 +2,7 @@ package com.chinesecooly.common;
 
 public enum Code {
 
-    SUCCESS(200),FAILED(404);
+    SUCCESS(200),FAILED(404),LOGIN_TIMEOUT(404),;
 
     private int code;
 

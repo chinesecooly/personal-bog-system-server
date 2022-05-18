@@ -2,12 +2,12 @@ package com.chinesecooly.user.controller;
 
 import com.chinesecooly.api.ArticleAPI;
 import com.chinesecooly.common.Result;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.chinesecooly.mysql.domain.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/sysArticle")
@@ -36,10 +36,12 @@ public class SysArticleController {
         return articleAPI.sysRecycle();
     }
 
+    @PreAuthorize("hasAuthority('delete:/sysArticle/sysDeleteById')")
     @GetMapping("/sysDeleteById")
     Result sysRecycle(@RequestParam("id")Long id){
         return articleAPI.sysDelete(id);
     }
+
     @GetMapping("/sysThoroughDeleteById")
     Result sysThoroughDeleteById(@RequestParam("id")Long id){
         return articleAPI.sysThoroughDeleteById(id);
@@ -48,6 +50,21 @@ public class SysArticleController {
     @GetMapping("/recoverArticleById")
     Result recoverArticleById(@RequestParam("id")Long id){
         return articleAPI.recoverArticleById(id);
+    }
+
+    @GetMapping("/addTag")
+    Result addTag(@RequestParam("body") String body){
+        return articleAPI.addTag(body);
+    }
+
+    @PostMapping("/removeTag")
+    Result removeTag(@RequestBody List<Tag> tags){
+        return articleAPI.removeTag(tags);
+    }
+
+    @PostMapping("/updateTag")
+    Result updateTag(@RequestBody Tag tag){
+        return articleAPI.updateTag(tag);
     }
 
 }

@@ -6,7 +6,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: http://localhost:8080
+            allowedOrigins: '*'
             allowedMethods:
               - GET
               - POST
@@ -22,7 +22,7 @@ spring:
         - id: service-user
           uri: http://localhost:8002
           predicates:
-            - Path=/user/**,/sysArticle/**
+            - Path=/user/**,/sysArticle/**,/sysMessage/**,/sysComment/**,/authority/**,/role/**,/userRole/**,/userAuthority/**,/userRole/**,/userAvatar/**
         - id: service-online-chat
           uri: ws://localhost:8003
           predicates:
@@ -34,4 +34,4 @@ spring:
         - id: service-message
           uri: http://localhost:8005
           predicates:
-            - Path=/message/**
+            - Path=/message/**,/messageStyle/**

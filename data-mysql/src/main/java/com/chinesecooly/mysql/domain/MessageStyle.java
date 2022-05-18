@@ -9,27 +9,27 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 角色权限对照表
- * @TableName user_authority
+ * 
+ * @TableName message_style
  */
-@TableName(value ="user_authority")
+@TableName(value ="message_style")
 @Data
-public class UserAuthority implements Serializable {
+public class MessageStyle implements Serializable {
     /**
-     * 用户权限ID
+     * 留言样式ID
      */
     @TableId
     private Long id;
 
     /**
-     * 用户ID
+     * 留言ID
      */
-    private Long userId;
+    private Long messageId;
 
     /**
-     * 权限ID
+     * 颜色
      */
-    private Long authorityId;
+    private String color;
 
     /**
      * 创建时间

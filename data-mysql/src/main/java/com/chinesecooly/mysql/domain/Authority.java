@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -19,6 +21,7 @@ public class Authority implements Serializable {
      * 权限ID
      */
     @TableId
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;
 
     /**
@@ -31,10 +34,12 @@ public class Authority implements Serializable {
      */
     private String path;
 
+    private String description;
+
     /**
      * 权限字符串
      */
-    private String key;
+    private String authKey;
 
     /**
      * 创建时间
