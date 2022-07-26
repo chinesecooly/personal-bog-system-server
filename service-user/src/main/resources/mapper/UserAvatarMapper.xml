@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinesecooly.user.mapper.UserAvatarMapper">
+
+    <resultMap id="BaseResultMap" type="com.chinesecooly.mysql.domain.UserAvatar">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="hairType" column="hair_type" jdbcType="VARCHAR"/>
+            <result property="eyebrowType" column="eyebrow_type" jdbcType="VARCHAR"/>
+            <result property="eyeType" column="eye_type" jdbcType="VARCHAR"/>
+            <result property="mouthType" column="mouth_type" jdbcType="VARCHAR"/>
+            <result property="clotheType" column="clothe_type" jdbcType="VARCHAR"/>
+            <result property="facialHairType" column="facial_hair_type" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="modifiedTime" column="modified_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,hair_type,
+        eyebrow_type,eye_type,mouth_type,
+        clothe_type,facial_hair__type,create_time,
+        modified_time
+    </sql>
+</mapper>
